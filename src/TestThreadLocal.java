@@ -4,12 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TestThreadLocal implements Runnable {
-    private static ThreadLocal<String> name = new ThreadLocal<String>() {
+    /*private static ThreadLocal<String> name = new ThreadLocal<String>() {
         @Override
         protected String initialValue() {
             return Thread.currentThread().getName();
         }
-    };
+    };*/
+
+    private static ThreadLocal<String> name = ThreadLocal.withInitial(() -> {
+        return Thread.currentThread().getName();
+    });
 
     private static ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>() {
         @Override
@@ -19,11 +23,11 @@ public class TestThreadLocal implements Runnable {
     };
 
     public static Date parse(String dateStr) throws ParseException {
-        return threadLocal.get().parse(dateStr);
+        return TestThreadLocal.threadLocal.get().parse(dateStr);
     }
 
     public static String formate(Date date) {
-        return threadLocal.get().format(date);
+        return TestThreadLocal.threadLocal.get().format(date);
     }
 
 
