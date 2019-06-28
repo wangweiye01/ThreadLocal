@@ -4,13 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TestThreadLocal {
-    /*private static ThreadLocal<String> name = new ThreadLocal<String>() {
-        @Override
-        protected String initialValue() {
-            return Thread.currentThread().getName();
-        }
-    };*/
-
     private static ThreadLocal<String> name = ThreadLocal.withInitial(() -> {
         return Thread.currentThread().getName();
     });
