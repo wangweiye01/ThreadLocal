@@ -11,7 +11,7 @@ public class TestThreadLocal {
     /**
      * 由于SimpleDateFormat不是线程安全的，所以考虑把它放到ThreadLocal中
      */
-    private static ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>() {
+    private static ThreadLocal<DateFormat> ddateFormateThreadLocal = new ThreadLocal<DateFormat>() {
         @Override
         protected DateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -19,11 +19,11 @@ public class TestThreadLocal {
     };
 
     public static Date parse(String dateStr) throws ParseException {
-        return TestThreadLocal.threadLocal.get().parse(dateStr);
+        return ddateFormateThreadLocal.get().parse(dateStr);
     }
 
     public static String formate(Date date) {
-        return TestThreadLocal.threadLocal.get().format(date);
+        return ddateFormateThreadLocal.get().format(date);
     }
 
 
