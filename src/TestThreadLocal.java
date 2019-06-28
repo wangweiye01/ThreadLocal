@@ -3,7 +3,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TestThreadLocal implements Runnable {
+public class TestThreadLocal {
     /*private static ThreadLocal<String> name = new ThreadLocal<String>() {
         @Override
         protected String initialValue() {
@@ -15,6 +15,9 @@ public class TestThreadLocal implements Runnable {
         return Thread.currentThread().getName();
     });
 
+    /**
+     * 由于SimpleDateFormat不是线程安全的，所以考虑把它放到ThreadLocal中
+     */
     private static ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>() {
         @Override
         protected DateFormat initialValue() {
@@ -31,16 +34,9 @@ public class TestThreadLocal implements Runnable {
     }
 
 
-    @Override
-    public void run() {
-        System.out.println(name.get());
-    }
-
     public static void main(String[] args) {
-        TestThreadLocal runnable = new TestThreadLocal();
-
-        Thread thread1 = new Thread(runnable, "线程1");
-        Thread thread2 = new Thread(runnable, "线程2");
+        Thread thread1 = new Thread(() -> System.out.println(name.get()), "线程1");
+        Thread thread2 = new Thread(() -> System.out.println(name.get()), "线程2");
 
         thread1.start();
         thread2.start();
